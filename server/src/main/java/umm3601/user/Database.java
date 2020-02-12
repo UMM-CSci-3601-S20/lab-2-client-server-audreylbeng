@@ -64,6 +64,18 @@ public class Database {
 
     return filteredUsers;
   }
+  /*
+
+  If we wanted to find anyone who was in one of several categories:
+  Make targets be the entire list of parameters, then for target in targets,
+  filteredUsers += contents of filterUsersBy.  Ideally add only if it doesn't
+  already contain but that involves binary searching for each element which is
+  bad.  Arrays are kinda the worst of both worlds here because they're ordered
+  but not inherently meaningfully; as such, the best way of doing this would
+  probably be to make filteredUsers a set and simply call toArray on it before
+  returning.
+
+  */
 
   /**
    * Get an array of all the users having the target age.
