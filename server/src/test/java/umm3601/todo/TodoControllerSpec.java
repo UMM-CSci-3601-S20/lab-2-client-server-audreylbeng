@@ -54,5 +54,19 @@ public class TodoControllerSpec {
     assertEquals(db.size(), argument.getValue().length);
   }
 
+  @Test
+  public void GET_to_request_limited_length() throws IOException {
+    
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("limit", Arrays.asList(new String[] { "20" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    todoController.getTodos(ctx);
+    
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
+    verify(ctx).json(argument.capture());
+    assertEquals(20, argument.getValue().length, "Incorrect number of elements returned.");
+  }
+
 
 }
