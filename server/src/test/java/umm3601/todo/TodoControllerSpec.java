@@ -1,6 +1,7 @@
 package umm3601.todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -80,6 +81,24 @@ public class TodoControllerSpec {
     verify(ctx).json(argument.capture());
     assertEquals(db.size(), argument.getValue().length, "Incorrect number of elements returned.");
 
+  }
+
+  @Test
+  public void GET_to_request_by_body() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("contains", Arrays.asList(new String[] {"non"}));
+    
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    todoController.getTodos(ctx);
+    
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
+    verify(ctx).json(argument.capture());
+    Todo[] results = argument.getValue();
+
+    assertEquals(111, results.length, "Wrong number of results returned.");
+    for (Todo result : results){
+      assertTrue(result.body.contains("non"), "Result did not contain \"non\".");
+    }
   }
 
 
