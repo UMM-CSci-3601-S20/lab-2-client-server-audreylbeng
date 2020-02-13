@@ -25,17 +25,24 @@ public class TodoController {
     *
     * @param ctx a Javalin HTTP context
     */
-   public void getTodo(Context ctx) {
-
-   }
-
-   /**
-    * Get a JSON response with a list of all the todos in the "database".
-    *
-    * @param ctx a Javalin HTTP context
-    */
-   public void getTodos(Context ctx) {
-
-   }
+    public void getTodo(Context ctx) {
+        String id = ctx.pathParam("id", String.class).get();
+        Todo todo = database.getTodo(id);
+        if (todo != null) {
+            ctx.json(todo);
+            ctx.status(201);
+        } else {
+            throw new NotFoundResponse("No todo with id " + id + " was found.");
+        }
+    }
+  /**
+   * Get a JSON response with a list of all the todos in the "database".
+   *
+   * @param ctx a Javalin HTTP context
+   */
+    public void getTodos(Context ctx) {
+        Todo[] todos = database.listTodos(ctx.queryParamMap());
+        ctx.json(todos);
+    }
 
 }
