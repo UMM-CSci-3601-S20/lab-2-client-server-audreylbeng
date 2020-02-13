@@ -54,7 +54,15 @@ public class TodoDatabase {
             else throw new BadRequestResponse("Specified status '" + tStatus + "' is neither 'complete' or 'incomplete'");
             filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
         }
-
+      
+        if (queryParams.containsKey("limit")){
+          int returnLength = Integer.parseInt(queryParams.get("limit").get(0));
+          if (returnLength > filteredTodos.length){
+            returnLength = filteredTodos.length;
+          }
+          filteredTodos = Arrays.copyOfRange(filteredTodos, 0, returnLength);
+        }
+      
         return filteredTodos;
     }
 
