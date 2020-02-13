@@ -68,5 +68,19 @@ public class TodoControllerSpec {
     assertEquals(20, argument.getValue().length, "Incorrect number of elements returned.");
   }
 
+  @Test
+  public void GET_to_request_excessive_length() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put("limit", Arrays.asList(new String[] { "1000" }));
+
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    todoController.getTodos(ctx);
+    
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
+    verify(ctx).json(argument.capture());
+    assertEquals(db.size(), argument.getValue().length, "Incorrect number of elements returned.");
+
+  }
+
 
 }
