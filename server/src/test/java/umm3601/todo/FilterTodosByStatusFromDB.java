@@ -17,10 +17,10 @@ public class FilterTodosByStatusFromDB {
     Todo[] allTodos = db.listTodos(new HashMap<>());
 
     Todo[] statusCompleteTodos = db.filterTodosByStatus(allTodos, true);
-    assertEquals(143, statusCompleteTodos.length, "Incorrect number of todos with status 27");
+    assertEquals(143, statusCompleteTodos.length, "Incorrect number of complete todos");
 
     Todo[] statusIncompleteTodos = db.filterTodosByStatus(allTodos, false);
-    assertEquals(157, statusIncompleteTodos.length, "Incorrect number of todos with status 33");
+    assertEquals(157, statusIncompleteTodos.length, "Incorrect number of incomplete todos");
   }
 
   @Test
