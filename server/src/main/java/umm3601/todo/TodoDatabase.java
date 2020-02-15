@@ -19,7 +19,7 @@ public class TodoDatabase {
       InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(todoDataFile));
       allTodos = gson.fromJson(reader, Todo[].class);
     }
-  
+
     public int size() {
       return allTodos.length;
     }
@@ -42,11 +42,10 @@ public class TodoDatabase {
      * @return an array of all the todos matching the given criteria
      */
     public Todo[] listTodos(Map<String, List<String>> queryParams) {
-        
+
         Todo[] filteredTodos = allTodos;
 
-        //insert filters here
-
+        //Limit
         if (queryParams.containsKey("limit")){
           int returnLength = Integer.parseInt(queryParams.get("limit").get(0));
           if (returnLength > filteredTodos.length){
@@ -54,8 +53,26 @@ public class TodoDatabase {
           }
           filteredTodos = Arrays.copyOfRange(filteredTodos, 0, returnLength);
         }
-    
+
+        //Filter Owner
+        if (queryParams.containsKey("owner")) {
+          String targetOwner = queryParams.get("owner").get(0);
+          filteredTodos = filterTodosByOwner(filteredTodos, targetOwner);
+        }
+
         return filteredTodos;
+    }
+
+    /**
+     * Get an array of all the todos having the target owner.
+     *
+     * @param todos         the list of todos to filter by owner
+     * @param targetOwner the target owner to look for
+     * @return an array of all the todos from the given list that have the target
+     *         owner
+     */
+    public Todo[] filterTodosByOwner(Todo[] todos, String targetOwner) {
+      return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todo[]::new);
     }
 
 }
