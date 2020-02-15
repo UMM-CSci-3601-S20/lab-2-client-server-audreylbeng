@@ -54,7 +54,7 @@ public class TodoDatabase {
             else throw new BadRequestResponse("Specified status '" + tStatus + "' is neither 'complete' or 'incomplete'");
             filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
         }
-      
+
         if (queryParams.containsKey("limit")){
           int returnLength = Integer.parseInt(queryParams.get("limit").get(0));
           if (returnLength > filteredTodos.length){
@@ -62,17 +62,17 @@ public class TodoDatabase {
           }
           filteredTodos = Arrays.copyOfRange(filteredTodos, 0, returnLength);
         }
-      
+
         return filteredTodos;
     }
 
     /**
-     * Get an array of all the todos having the target age.
+     * Get an array of all the todos having the target status.
      *
-     * @param todos     the list of todos to filter by age
-     * @param targetAge the target age to look for
+     * @param todos     the list of todos to filter by status
+     * @param targetAge the target status to look for
      * @return an array of all the todos from the given list that have the target
-     *         age
+     *         status
      */
     public Todo[] filterTodosByStatus(Todo[] todos, boolean targetStatus) {
       return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todo[]::new);
