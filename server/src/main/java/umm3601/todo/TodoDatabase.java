@@ -19,7 +19,7 @@ public class TodoDatabase {
       InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(todoDataFile));
       allTodos = gson.fromJson(reader, Todo[].class);
     }
-  
+
     public int size() {
       return allTodos.length;
     }
@@ -42,10 +42,18 @@ public class TodoDatabase {
      * @return an array of all the todos matching the given criteria
      */
     public Todo[] listTodos(Map<String, List<String>> queryParams) {
-        
+
         Todo[] filteredTodos = allTodos;
 
         //insert filters here
+        if (queryParams.containsKey("status")) {
+          String tStatus = queryParams.get("status").get(0);
+          boolean targetStatus;
+            if(tStatus.equals("complete")) targetStatus = true;
+            else if(tStatus.equals("incomplete")) targetStatus = false;
+            else throw new BadRequestResponse("Specified status '" + tStatus + "' is neither 'complete' or 'incomplete'");
+            filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
+        }
 
         if (queryParams.containsKey("limit")){
           int returnLength = Integer.parseInt(queryParams.get("limit").get(0));
@@ -54,8 +62,20 @@ public class TodoDatabase {
           }
           filteredTodos = Arrays.copyOfRange(filteredTodos, 0, returnLength);
         }
-    
+
         return filteredTodos;
+    }
+
+    /**
+     * Get an array of all the todos having the target status.
+     *
+     * @param todos     the list of todos to filter by status
+     * @param targetAge the target status to look for
+     * @return an array of all the todos from the given list that have the target
+     *         status
+     */
+    public Todo[] filterTodosByStatus(Todo[] todos, boolean targetStatus) {
+      return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todo[]::new);
     }
 
 }
