@@ -67,6 +67,7 @@ public class TodoDatabase {
         if(queryParams.containsKey("orderBy")){
           String targetAttribute = queryParams.get("orderBy").get(0);
           filteredTodos = orderBy(filteredTodos, targetAttribute);
+        }
 
         //Filter Owner
         if (queryParams.containsKey("owner")) {
@@ -75,7 +76,7 @@ public class TodoDatabase {
         }
 
         return filteredTodos;
-      }
+
     }
 
     /**
