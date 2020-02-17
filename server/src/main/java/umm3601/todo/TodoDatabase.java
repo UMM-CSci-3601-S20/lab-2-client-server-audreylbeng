@@ -42,8 +42,17 @@ public class TodoDatabase {
      * @return an array of all the todos matching the given criteria
      */
     public Todo[] listTodos(Map<String, List<String>> queryParams) {
-
         Todo[] filteredTodos = allTodos;
+
+        //insert filters here
+        if (queryParams.containsKey("status")) {
+          String tStatus = queryParams.get("status").get(0);
+          boolean targetStatus;
+            if(tStatus.equals("complete")) targetStatus = true;
+            else if(tStatus.equals("incomplete")) targetStatus = false;
+            else throw new BadRequestResponse("Specified status '" + tStatus + "' is neither 'complete' or 'incomplete'");
+            filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
+        }
 
         //Limit
         if (queryParams.containsKey("limit")){
@@ -64,6 +73,7 @@ public class TodoDatabase {
     }
 
     /**
+
      * Get an array of all the todos having the target owner.
      *
      * @param todos         the list of todos to filter by owner
@@ -73,6 +83,16 @@ public class TodoDatabase {
      */
     public Todo[] filterTodosByOwner(Todo[] todos, String targetOwner) {
       return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todo[]::new);
+
+     * Get an array of all the todos having the target status.
+     *
+     * @param todos     the list of todos to filter by status
+     * @param targetAge the target status to look for
+     * @return an array of all the todos from the given list that have the target
+     *         status
+     */
+    public Todo[] filterTodosByStatus(Todo[] todos, boolean targetStatus) {
+      return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todo[]::new);
     }
 
 }
