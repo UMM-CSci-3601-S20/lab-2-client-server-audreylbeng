@@ -83,11 +83,14 @@ public class TodoDatabase {
      */
     public Todo[] filterTodosByOwner(Todo[] todos, String targetOwner) {
       return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todo[]::new);
+    }
 
+    /**
+     *
      * Get an array of all the todos having the target status.
      *
      * @param todos     the list of todos to filter by status
-     * @param targetAge the target status to look for
+     * @param targetStatus the target status to look for
      * @return an array of all the todos from the given list that have the target
      *         status
      */
