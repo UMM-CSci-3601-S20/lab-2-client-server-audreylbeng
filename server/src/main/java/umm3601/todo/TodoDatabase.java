@@ -67,7 +67,7 @@ public class TodoDatabase {
     /**
      *
      * @param todos         the list of todos to order
-     * @param targetCompany attribute by which to order
+     * @param targetAttribute attribute by which to order
      * @return an array of all the todos in order that have the target attribute
      */
     public Todo[] orderBy(Todo[] todos, String targetAttribute) {
