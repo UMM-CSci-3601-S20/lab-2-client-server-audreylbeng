@@ -31,9 +31,15 @@ public class FilterTodosByCombinedFiltersFromDB {
     assertEquals(143, statusCompleteTodos.length, "Incorrect number of complete todos");
 
     queryParams.clear();
+    queryParams.put("category", Arrays.asList(new String[] { "Homework" }));
+    Todo[] homeworkTodos = db.listTodos(queryParams);
+    assertEquals(79, homeworkTodos.length, "Incorrect number of todos for category 'Homework'");
+
+    queryParams.clear();
     queryParams.put("owner", Arrays.asList(new String[] { "Blanche" }));
     queryParams.put("status", Arrays.asList(new String[] { "complete" }));
+    queryParams.put("category", Arrays.asList(new String[] { "Homework" }));
     Todo[] blancheCompleteTodos = db.listTodos(queryParams);
-    assertEquals(22, blancheCompleteTodos.length, "Incorrect number of todos with owner Blanche and status complete");
+    assertEquals(5, blancheCompleteTodos.length, "Incorrect number of todos with owner Blanche, status complete and category homework");
   }
 }
