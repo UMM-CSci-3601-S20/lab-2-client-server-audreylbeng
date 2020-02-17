@@ -75,6 +75,7 @@ public class TodoDatabase {
         }
 
         return filteredTodos;
+      }
     }
 
     /**
@@ -103,7 +104,7 @@ public class TodoDatabase {
 
       }
     }
-  
+
     /**
      * Get an array of all the todos having the target owner.
      *
