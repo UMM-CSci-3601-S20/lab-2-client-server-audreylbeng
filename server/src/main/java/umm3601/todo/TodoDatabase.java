@@ -63,6 +63,12 @@ public class TodoDatabase {
           filteredTodos = Arrays.copyOfRange(filteredTodos, 0, returnLength);
         }
 
+        //orderBy
+        if(queryParams.containsKey("orderBy")){
+          String targetAttribute = queryParams.get("orderBy").get(0);
+          filteredTodos = orderBy(filteredTodos, targetAttribute);
+        }
+
         //Filter Owner
         if (queryParams.containsKey("owner")) {
           String targetOwner = queryParams.get("owner").get(0);
@@ -70,10 +76,37 @@ public class TodoDatabase {
         }
 
         return filteredTodos;
+
     }
 
     /**
+     *
+     * @param todos         the list of todos to order
+     * @param targetAttribute attribute by which to order
+     * @return an array of all the todos in order that have the target attribute
+     */
+    public Todo[] orderBy(Todo[] todos, String targetAttribute) {
+      switch(targetAttribute){
 
+        case "owner":
+          return Arrays.stream(todos).sorted((Todo t1, Todo t2) -> t1.owner.compareTo(t2.owner)).toArray(Todo[]::new);
+
+        case "status":
+          return Arrays.stream(todos).sorted((Todo t1, Todo t2) -> Boolean.compare(t1.status,t2.status)).toArray(Todo[]::new);
+
+        case "body":
+          return Arrays.stream(todos).sorted((Todo t1, Todo t2) -> t1.body.compareTo(t2.body)).toArray(Todo[]::new);
+
+        case "category":
+          return Arrays.stream(todos).sorted((Todo t1, Todo t2) -> t1.category.compareTo(t2.category)).toArray(Todo[]::new);
+
+        default:
+          throw new BadRequestResponse(targetAttribute + " is not a attribute of Todo");
+
+      }
+    }
+
+    /**
      * Get an array of all the todos having the target owner.
      *
      * @param todos         the list of todos to filter by owner
