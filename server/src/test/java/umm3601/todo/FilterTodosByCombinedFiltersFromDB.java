@@ -1,4 +1,4 @@
-package umm3601.user;
+package umm3601.todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,29 +11,29 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests umm3601.user.Database listUsers with _age_ and _company_ query
+ * Tests umm3601.todo.Database listTodos with _age_ and _company_ query
  * parameters
  */
 public class FilterTodosByCombinedFiltersFromDB {
 
   @Test
-  public void listUsersWithCombinedFilters() throws IOException {
-    UserDatabase db = new UserDatabase("/users.json");
+  public void listTodosWithCombinedFilters() throws IOException {
+    TodoDatabase db = new TodoDatabase("/todos.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
-    queryParams.put("age", Arrays.asList(new String[] { "25" }));
-    User[] age25Users = db.listUsers(queryParams);
-    assertEquals(2, age25Users.length, "Incorrect number of users with age 25");
+    queryParams.put("owner", Arrays.asList(new String[] { "Blanche" }));
+    Todo[] blancheTodos = db.listTodos(queryParams);
+    assertEquals(43, blancheTodos.length, "Incorrect number of todos for owner 'Blanche'");
 
     queryParams.clear();
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
-    User[] ohmnetUsers = db.listUsers(queryParams);
-    assertEquals(2, ohmnetUsers.length, "Incorrect number of users with company OHMNET");
+    queryParams.put("status", Arrays.asList(new String[] { "complete" }));
+    Todo[] statusCompleteTodos = db.listTodos(queryParams);
+    assertEquals(143, statusCompleteTodos.length, "Incorrect number of complete todos");
 
     queryParams.clear();
-    queryParams.put("age", Arrays.asList(new String[] { "25" }));
-    queryParams.put("company", Arrays.asList(new String[] { "OHMNET" }));
-    User[] ohmnetAge25Users = db.listUsers(queryParams);
-    assertEquals(1, ohmnetAge25Users.length, "Incorrect number of users with company OHMNET and age 25");
+    queryParams.put("owner", Arrays.asList(new String[] { "Blanche" }));
+    queryParams.put("status", Arrays.asList(new String[] { "complete" }));
+    Todo[] blancheCompleteTodos = db.listTodos(queryParams);
+    assertEquals(22, blancheCompleteTodos.length, "Incorrect number of todos with owner Blanche and status complete");
   }
 }
