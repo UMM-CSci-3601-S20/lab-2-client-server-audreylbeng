@@ -45,29 +45,15 @@ public class FilterTodosByCombinedFiltersFromDB {
     Todo[] blancheCompleteHomeworkTodos = db.listTodos(queryParams);
     assertEquals(5, blancheCompleteHomeworkTodos.length, "Incorrect number of todos with owner Blanche, status complete and category homework");
 
-    //test ordering
+    //test ordering of body
     Random r = new Random();
     int n = r.nextInt(blancheCompleteHomeworkTodos.length);
-
-    Todo[] sortedOwner = db.orderBy(blancheCompleteHomeworkTodos, "owner");
-    Todo[] sortedStatus = db.orderBy(blancheCompleteHomeworkTodos, "status");
     Todo[] sortedBody = db.orderBy(blancheCompleteHomeworkTodos, "body");
-    Todo[] sortedCategory = db.orderBy(blancheCompleteHomeworkTodos, "category");
-
-    String lastOwner = sortedOwner[0].owner;
-    boolean lastStatus = sortedStatus[0].status;
     String lastBody = sortedBody[0].body;
-    String lastCategory = sortedCategory[0].category;
 
     for(int i = 1; i<blancheCompleteHomeworkTodos.length; i += n){
-        assertEquals(true, lastOwner.compareTo(sortedOwner[i].owner) <= 0, "Owners are not sorted correctly");
-        lastOwner = sortedOwner[i].owner;
-        assertEquals(true, Boolean.compare(lastStatus, sortedStatus[i].status) <= 0, "Status is not sorted correctly");
-        lastStatus = sortedStatus[i].status;
         assertEquals(true, lastBody.compareTo(sortedBody[i].body) <= 0, "Bodies are not sorted correctly");
         lastBody = sortedBody[i].body;
-        assertEquals(true, lastCategory.compareTo(sortedCategory[i].category) <= 0, "Categories are not sorted correctly");
-        lastCategory = sortedCategory[i].category;
     }
   }
 }
