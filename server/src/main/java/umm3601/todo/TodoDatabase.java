@@ -68,6 +68,7 @@ public class TodoDatabase {
         if (queryParams.containsKey("contains")) {
           String targetBody = queryParams.get("contains").get(0);
           filteredTodos = searchBody(filteredTodos, targetBody);
+        }
 
         //orderBy
         if(queryParams.containsKey("orderBy")){
